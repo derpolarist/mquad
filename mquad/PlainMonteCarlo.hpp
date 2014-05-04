@@ -1,37 +1,56 @@
 #ifndef PlainMonteCarlo.hpp
 #define PlainMonteCarlo.hpp
 
+#include <random>
+#include <vector>
 
 
 
-/*
- * get a function and maximum number of samplepoints	 
- * 
-*/  
-
-
-template <class integrand, class pointgenerator>
-double applyQMCRule()
-
-class FullGrid : public QuasiMonteCarlo{
-  
-  
-  
-}
-
-double integrateMonteCarlo (blabla f,  unsigned dim, unsigned long maxSamples){
-  double expectation = 0;
+template<class Integrand, typename T>
+T integratePlainMonteCarlo (Integrand& f,  const unsigned Dimension, const ulong MaxSamples){
+//   typedef double T;
   
   //init random number genrator
+  std::default_random_engine generator;
+  std::uniform_real_distribution<double> distribution(0.0, 1.0);
   
-  for ( unsigned long i=0; i < maxSamples ; ++i){
-      
+  T sum = 0;
+  T weight = T(1) / MaxSamples ;
+  std::vector<T> newpoint(Dimension);
+  for ( ulong i=0; i < MaxSamples ; ++i){
+      for (uint j=0; j<Dimension; ++j){
+          newpoint[j] = distribution(generator);
+      }
+
+      sum += weight * f(newpoint);
     
   }
   
-  
-    return expectation;
+    return sum;
+}
+
+template<class Integrand>
+double integratePlainMonteCarlo (Integrand& f,  const unsigned Dimension, const ulong MaxSamples){
+
+  //init random number genrator
+  std::default_random_engine generator;
+  std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+  double sum = 0;
+  double weight = double(1) / MaxSamples ;
+  std::vector<double> newpoint(Dimension);
+  for ( ulong i=0; i < MaxSamples ; ++i){
+      for (uint j=0; j<Dimension; ++j){
+          newpoint[j] = distribution(generator);
+      }
+
+      sum += weight * f(newpoint);
+
+  }
+
+    return sum;
 }
 
 #endif /* PlainMonteCarlo.hpp */
+
 
