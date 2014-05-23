@@ -62,7 +62,7 @@ public:
             for( unsigned long k=0; k < nDimensions; ++k) {
                 delta[k] = (f.domain.upper[k] - f.domain.lower[k])/double(nPointsPerDimension);
             }
-            weight = 1.0/double(nIntegrationPoints);
+            weight = ReturnType(1)/nIntegrationPoints;
 
             total = 0;
             i = 1;
